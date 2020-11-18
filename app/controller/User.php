@@ -8,7 +8,8 @@ use think\Request;
 
 use  app\model\User as UserModel;
 
-class User
+
+class User extends Base
 {
     /**
      * 显示资源列表
@@ -17,7 +18,15 @@ class User
      */
     public function index()
     {
-        return UserModel::select();
+        //获取数据列表
+        $data = UserModel::field('id,username')->select();
+        //判是是否有值
+        return $this->create($data,$data->isEmpty()?'数据不存在':'数据请求成功');
+        // if ($data->isEmpty()) {
+        //     return $this->create($data, '数据不存在');
+        // } else {
+        //     return $this->create($data, '数据请求成功');
+        // }
     }
 
     /**
