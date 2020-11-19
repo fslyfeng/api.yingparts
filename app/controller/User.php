@@ -19,14 +19,15 @@ class User extends Base
     public function index()
     {
         //获取数据列表
-        $data = UserModel::field('id,username')->select();
+        $data = UserModel::field('')->page($this->page, $this->pageSize)
+            ->select();
         //判是是否有值
-        return $this->create($data,$data->isEmpty()?'数据不存在':'数据请求成功');
-        // if ($data->isEmpty()) {
-        //     return $this->create($data, '数据不存在');
-        // } else {
-        //     return $this->create($data, '数据请求成功');
-        // }
+        // return $this->create($data, $data->isEmpty() ? '数据不存在' : '数据请求成功');
+        if ($data->isEmpty()) {
+            return $this->create($data, '无数据', 204);
+        } else {
+            return $this->create($data, '数据请求成功');
+        }
     }
 
     /**
