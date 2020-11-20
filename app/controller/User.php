@@ -9,7 +9,8 @@ use think\facade\Validate;
 use think\Request;
 
 use  app\model\User as UserModel;
-
+use think\exception\ValidateException;
+use app\validate\User as UserValidate;
 
 class User extends Base
 {
@@ -40,7 +41,28 @@ class User extends Base
      */
     public function save(Request $request)
     {
-        //
+        //获取数据
+        $data = $request->param();
+        //验证返回
+        try {
+            //验证方法
+            validate(UserValidate::class)->check($data);
+        } catch (ValidateException $exception) {
+            //错误返回
+            return $this->create([], $exception->getError(), 400);
+        }
+        //写入
+        //密码
+        $data['password'] = sha1($data['password']);
+
+        //写入
+        $id = UserModel::create($data)->getData('id');
+        //判是是否有值
+        if (empty($id)) {
+            return $this->create([], '注册失败', 400);
+        } else {
+            return $this->create($id, '注册成功', 200);
+        }
     }
 
     /**
@@ -63,7 +85,7 @@ class User extends Base
         if (empty($data)) {
             return $this->create([], '无数据', 204);
         } else {
-            return $this->create($data, '数据请求成功');
+            return $this->create($data, '数据请求成功', 200);
         }
     }
 
