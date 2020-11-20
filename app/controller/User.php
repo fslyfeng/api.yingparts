@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace app\controller;
 
+use think\facade\Validate;
+
 use think\Request;
 
 use  app\model\User as UserModel;
@@ -24,7 +26,7 @@ class User extends Base
         //判是是否有值
         // return $this->create($data, $data->isEmpty() ? '数据不存在' : '数据请求成功');
         if ($data->isEmpty()) {
-            return $this->create($data, '无数据', 204);
+            return $this->create([], '无数据', 204);
         } else {
             return $this->create($data, '数据请求成功');
         }
@@ -49,7 +51,20 @@ class User extends Base
      */
     public function read($id)
     {
-        echo 'read';
+        //获取数据
+        $data = UserModel::field('')->find($id);
+
+        //判断id是否为整型
+        if (!validate::isInteger($id)) {
+            return $this->create([], 'id参数不合法', 400);
+        }
+
+        //判是是否有值
+        if (empty($data)) {
+            return $this->create([], '无数据', 204);
+        } else {
+            return $this->create($data, '数据请求成功');
+        }
     }
 
     /**
