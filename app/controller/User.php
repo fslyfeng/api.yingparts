@@ -73,13 +73,12 @@ class User extends Base
      */
     public function read($id)
     {
-        //获取数据
-        $data = UserModel::field('')->find($id);
-
         //判断id是否为整型
         if (!validate::isInteger($id)) {
             return $this->create([], 'id参数不合法', 400);
         }
+        //获取数据
+        $data = UserModel::field('')->find($id);
 
         //判是是否有值
         if (empty($data)) {
@@ -109,6 +108,16 @@ class User extends Base
      */
     public function delete($id)
     {
-        //
+        //判断id是否为整型
+        if (!validate::isInteger($id)) {
+            return $this->create([], 'id参数不合法', 400);
+        }
+        //删除
+        try {
+            UserModel::find($id)->delete();
+            return $this->create([], '数据删除成功', 200);
+        } catch (\Error $e) {
+            return $this->create([], '错误或无法删除', 400);
+        }
     }
 }
