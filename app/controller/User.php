@@ -97,7 +97,30 @@ class User extends Base
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $data = $request->param();
+        //验证返回
+        try {
+            //验证方法
+            validate(UserValidate::class)->scene('edit')->check($data);
+        } catch (ValidateException $exception) {
+            //错误返回
+            return $this->create([], $exception->getError(), 400);
+        }
+        //获取数据库里的数据
+        $updateDate = UserModel::find($id);
+        //邮箱修改时不可以一致
+        if ($updateDate->email === $data['email']) {
+            return $this->create([], '与原邮箱地址相同', 400);
+        }
+        //修改数据
+        $id = UserModel::update($data)->getData('id');
+        //判是是否有值
+        if (empty($id)) {
+            return $this->create([], '修改失败', 400);
+        } else {
+            return $this->create("($id)", '修改成功', 200);
+        }
     }
 
     /**
