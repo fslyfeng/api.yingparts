@@ -9,7 +9,6 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 use think\facade\Route;
-use think\route\Rule;
 
 Route::get('think', function () {
     return 'hello,ThinkPHP6!';
@@ -20,5 +19,6 @@ Route::get('hello/:name', 'index/hello');
 //用户模块
 Route::resource('user', 'User');
 //一对多用户地址
-
 Route::get('user/:id/access', 'user/access');
+//用户登录
+Route::post('login', 'user/login');

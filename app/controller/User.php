@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace app\controller;
 
 use think\facade\Validate;
-
 use think\Request;
-
 use app\model\User as UserModel;
 use think\exception\ValidateException;
 use app\validate\User as UserValidate;
@@ -158,6 +156,27 @@ class User extends Base
             return $this->create([], '无数据', 204);
         } else {
             return $this->create($data, '数据请求成功');
+        }
+    }
+
+    public function login(Request $request)
+    {
+        $data = $request->param();
+
+        //验证用户密码
+        $result = Validate::rule([
+            'username'  =>  'unique:user,username^password'
+        ])->check([
+            'username'  =>  $data['username'],
+            'password'  =>  sha1($data['password'])
+        ]);
+
+        //判断，反向
+        if (!$result) {
+            session('admin', $data['username']);
+            return $this->create(true, '登录成功~', 200);
+        } else {
+            return $this->create([], '用户名或密码错误~', 400);
         }
     }
 }
