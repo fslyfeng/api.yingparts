@@ -8,7 +8,7 @@ use think\facade\Validate;
 
 use think\Request;
 
-use  app\model\User as UserModel;
+use app\model\User as UserModel;
 use think\exception\ValidateException;
 use app\validate\User as UserValidate;
 
@@ -141,6 +141,23 @@ class User extends Base
             return $this->create([], '数据删除成功', 200);
         } catch (\Error $e) {
             return $this->create([], '错误或无法删除', 400);
+        }
+    }
+
+    public function access($id)
+    {
+        //判断id是否为整型
+        if (!validate::isInteger($id)) {
+            return $this->create([], 'id参数不合法', 400);
+        }
+
+        //地址列表
+        $data = UserModel::find($id)->access()->field('id,details')->select();
+        //判是是否有值
+        if ($data->isEmpty()) {
+            return $this->create([], '无数据', 204);
+        } else {
+            return $this->create($data, '数据请求成功');
         }
     }
 }
