@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\controller;
+namespace app\api\controller;
 
 use think\facade\Validate;
 use think\Request;
