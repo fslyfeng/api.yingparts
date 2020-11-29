@@ -29,4 +29,6 @@ return [
     'error_message'    => '页面错误！请稍后再试～',
     // 显示错误信息
     'show_error_msg'   => false,
+    // 默认分页数
+    'page_size'        => 5,
 ];

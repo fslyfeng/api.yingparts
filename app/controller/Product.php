@@ -1,12 +1,12 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace app\controller;
 
 use think\Request;
-// use app\model\User as ProductModel;
-use think\facade\Db;
-class Product
+use app\model\Product as ProductModel;
+class Product extends Base
 {
     /**
      * 显示资源列表
@@ -15,9 +15,22 @@ class Product
      */
     public function index()
     {
-        $query = Db::connect('read_sql') -> table('spxx') -> select();
-        return json($query);
-        // phpinfo();
+        //获取数据列表
+        $data = ProductModel::field('id,lbid,spmc')->select();
+        //判断是否有数据
+        if ($data->isEmpty()) {
+            return $this->create(
+                $data,
+                '数据不存在',
+                400
+            );
+        } else {
+            return $this->create(
+                $data,
+                '数据请求成功',
+                201
+            );
+        }
     }
 
     /**

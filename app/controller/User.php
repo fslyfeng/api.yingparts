@@ -1,12 +1,11 @@
 <?php
-declare(strict_types = 1);
 
+declare(strict_types=1);
 namespace app\controller;
-
 use think\Request;
 use app\model\User as UserModel;
 
-class User
+class User extends Base
 {
     /**
      * 显示资源列表
@@ -15,7 +14,22 @@ class User
      */
     public function index()
     {
-        return UserModel::select();
+        //获取数据列表
+        $data = UserModel::select();
+        //判断是否有数据
+        if ($data->isEmpty()) {
+            return $this->create(
+                $data,
+                '数据不存在',
+                400
+            );
+        } else {
+            return $this->create(
+                $data,
+                '数据请求成功',
+                201
+            );
+        }
     }
 
     /**
