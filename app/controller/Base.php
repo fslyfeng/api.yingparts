@@ -2,11 +2,19 @@
 
 namespace app\controller;
 
+use think\facade\Config;
+use think\facade\Request;
 use think\Response;
-use think\route\Resource;
 
 abstract class Base
 {
+  protected $pageSize;
+  public function __construct()
+  {
+    //获取每分页条数
+    $this->pageSize = (int)Request::param('page_size', Config::get('app.page_size'));
+  }
+
   protected function create($data, $msg = '', $code = 200, $type = 'json')
   {
     //标准api结构生成

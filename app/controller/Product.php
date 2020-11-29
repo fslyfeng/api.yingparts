@@ -13,10 +13,13 @@ class Product extends Base
      *
      * @return \think\Response
      */
-    public function index()
+    public function index($page=1)
     {
         //获取数据列表
-        $data = ProductModel::field('id,lbid,spmc')->select();
+        $data = ProductModel::paginate([
+            'list_rows'=> $this->pageSize,
+            'page' => $page,
+        ]);
         //判断是否有数据
         if ($data->isEmpty()) {
             return $this->create(
