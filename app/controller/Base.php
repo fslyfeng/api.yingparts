@@ -15,7 +15,7 @@ abstract class Base
     $this->pageSize = (int)Request::param('page_size', Config::get('app.page_size'));
   }
 
-  protected function create($data, $msg = '', $code = 200, $type = 'json')
+  protected function create($data, string $msg = '', int $code = 200, string $type = 'json'): Response
   {
     //标准api结构生成
 
