@@ -6,6 +6,8 @@ namespace app\controller;
 
 use think\Request;
 use app\model\Product as ProductModel;
+use think\facade\Lang;
+
 class Product extends Base
 {
     /**
@@ -13,11 +15,11 @@ class Product extends Base
      *
      * @return \think\Response
      */
-    public function index($page=1)
+    public function index($page = 1)
     {
         //获取数据列表
         $data = ProductModel::paginate([
-            'list_rows'=> $this->pageSize,
+            'list_rows' => $this->pageSize,
             'page' => $page,
         ]);
         //判断是否有数据
@@ -30,8 +32,8 @@ class Product extends Base
         } else {
             return $this->create(
                 $data,
-                '数据请求成功',
-                201
+                Lang::get('OK'),
+                200
             );
         }
     }
