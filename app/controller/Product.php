@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace app\controller;
 
-use think\Request;
 use app\model\Product as ProductModel;
 use think\facade\Lang;
+use think\Request;
 
 class Product extends Base
 {
@@ -26,8 +26,8 @@ class Product extends Base
         if ($data->isEmpty()) {
             return $this->create(
                 $data,
-                '数据不存在',
-                400
+                Lang::get('No Content'),
+                204
             );
         } else {
             return $this->create(

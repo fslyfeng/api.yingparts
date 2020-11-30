@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use think\facade\Config;
+use think\facade\Lang;
 use think\facade\Request;
 use think\Response;
 
@@ -30,5 +31,13 @@ abstract class Base
     ];
     //返回api接口
     return Response::create($result, $type);
+  }
+  public function __call($name, $arguments)
+  /***
+  * @ description:方法不存在的错误
+  */
+  {
+
+    return $this->create([], Lang::get('Not Found'), 404);
   }
 }

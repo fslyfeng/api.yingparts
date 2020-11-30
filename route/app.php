@@ -15,3 +15,9 @@ Route::get('think', function () {
 });
 
 Route::get('hello/:name', 'index/hello');
+
+//用户模块
+Route::resource('user', 'User');
+
+//产品模块
+Route::resource('product', 'Product');
