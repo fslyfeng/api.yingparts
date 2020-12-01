@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\controller;
 
 use app\model\Product as ProductModel;
+use think\facade\Validate;
 use think\facade\Lang;
 use think\Request;
 
@@ -25,7 +26,7 @@ class Product extends Base
         //判断是否有数据
         if ($data->isEmpty()) {
             return $this->create(
-                $data,
+                [],
                 Lang::get('No Content'),
                 204
             );
@@ -57,7 +58,31 @@ class Product extends Base
      */
     public function read($id)
     {
-        //
+        $data = ProductModel::field('id,lbid,spmc,sj')->find($id);
+
+        //判断id是否整型
+        if (!Validate::isInteger($id)) {
+            return $this->create(
+                [],
+                Lang::get('Bad Request'),
+                400
+            );
+        }
+
+        //判断是否有数据
+        if (empty($data)) {
+            return $this->create(
+                [],
+                Lang::get('No Content'),
+                204
+            );
+        } else {
+            return $this->create(
+                $data,
+                Lang::get('OK'),
+                200
+            );
+        }
     }
 
     /**

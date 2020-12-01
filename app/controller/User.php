@@ -1,9 +1,13 @@
 <?php
 
 declare(strict_types=1);
+
 namespace app\controller;
+
 use think\Request;
 use app\model\User as UserModel;
+use think\facade\Validate;
+use think\facade\Lang;
 
 class User extends Base
 {
@@ -40,7 +44,6 @@ class User extends Base
      */
     public function save(Request $request)
     {
-        //
     }
 
     /**
@@ -51,7 +54,31 @@ class User extends Base
      */
     public function read($id)
     {
-        //
+        $data = UserModel::field('id,username,password,email')->find($id);
+
+        //判断id是否整型
+        if (!Validate::isInteger($id)) {
+            return $this->create(
+                [],
+                Lang::get('Bad Request'),
+                400
+            );
+        }
+
+        //判断是否有数据
+        if (empty($data)) {
+            return $this->create(
+                [],
+                Lang::get('No Content'),
+                204
+            );
+        } else {
+            return $this->create(
+                $data,
+                Lang::get('OK'),
+                200
+            );
+        }
     }
 
     /**
