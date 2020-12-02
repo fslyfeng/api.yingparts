@@ -6,8 +6,11 @@ namespace app\controller;
 
 use think\Request;
 use app\model\User as UserModel;
+use think\exception\ValidateException;
 use think\facade\Validate;
+use app\validate\User as UserValidate;
 use think\facade\Lang;
+
 
 class User extends Base
 {
@@ -23,14 +26,14 @@ class User extends Base
         //判断是否有数据
         if ($data->isEmpty()) {
             return $this->create(
-                $data,
-                '数据不存在',
+                [],
+                Lang::get('Bad Request'),
                 400
             );
         } else {
             return $this->create(
                 $data,
-                '数据请求成功',
+                Lang::get('OK'),
                 201
             );
         }
@@ -44,6 +47,38 @@ class User extends Base
      */
     public function save(Request $request)
     {
+        //获取数据
+        $data = $request->param();
+        //验证返回
+        try {
+            //验证
+            validate(UserValidate::class)->check($data);
+        } catch (ValidateException $exception) {
+            //错误返回
+            return $this->create(
+                [],
+                $exception->getError(),
+                400
+            );
+        }
+        // 密码加密,采用sha1算法
+        $data['password'] =  hash('sha256', $data['password']);
+        //写入用户信息并返回id
+        $id = UserModel::create($data)->getData('id');
+        //判断是否有id数据，注册成攻
+        if (empty($id)) {
+            return $this->create(
+                [],
+                Lang::get('fail to register'),
+                400
+            );
+        } else {
+            return $this->create(
+                $data,
+                Lang::get('registration success'),
+                200
+            );
+        }
     }
 
     /**
@@ -90,7 +125,6 @@ class User extends Base
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
