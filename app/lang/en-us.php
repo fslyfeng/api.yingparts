@@ -8,6 +8,7 @@ return [
   'Bad Request '         => '400 Bad Request',
   'Not Found'            => '404 Custom error pages',
   'registration success' => 'registration success',
-  'fail to register'     => 'fail to register'
+  'fail to register'     => 'fail to register',
+  'Forbidden'            => 'Forbidden'
 
 ];

@@ -89,8 +89,6 @@ class User extends Base
      */
     public function read($id)
     {
-        $data = UserModel::field('id,username,password,email')->find($id);
-
         //判断id是否整型
         if (!Validate::isInteger($id)) {
             return $this->create(
@@ -99,6 +97,8 @@ class User extends Base
                 400
             );
         }
+
+        $data = UserModel::field('id,username,password,email')->find($id);
 
         //判断是否有数据
         if (empty($data)) {
@@ -135,6 +135,29 @@ class User extends Base
      */
     public function delete($id)
     {
-        //
+
+        //判断id是否整型
+        if (!Validate::isInteger($id)) {
+            return $this->create(
+                [],
+                Lang::get('Bad Request'),
+                400
+            );
+        }
+        // 删除数据
+        try {
+            UserModel::find($id)->delete();
+            return $this->create(
+                [],
+                Lang::get('OK'),
+                200
+            );
+        } catch (\Error $e) {
+            return $this->create(
+                [],
+                Lang::get('Not Found'),
+                400
+            );
+        }
     }
 }

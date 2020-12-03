@@ -8,5 +8,6 @@ return [
   'Bad Request'          => '错误请求；非法请求。',
   'Not Found'            => '网页或文件未找到,服务器无法回应且不知原因。',
   'registration success' => '注册成功',
-  'fail to register'     => '注册失败'
+  'fail to register'     => '注册失败',
+  'Forbidden'            => '禁止访问:授权失败或 id 无效。'
 ];
