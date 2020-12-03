@@ -11,7 +11,6 @@ use think\facade\Validate;
 use app\validate\User as UserValidate;
 use think\facade\Lang;
 
-
 class User extends Base
 {
     /**
@@ -27,13 +26,13 @@ class User extends Base
         if ($data->isEmpty()) {
             return $this->create(
                 [],
-                Lang::get('Bad Request'),
+                Lang::get('code.Bad Request'),
                 400
             );
         } else {
             return $this->create(
                 $data,
-                Lang::get('OK'),
+                Lang::get('code.OK'),
                 201
             );
         }
@@ -69,13 +68,13 @@ class User extends Base
         if (empty($id)) {
             return $this->create(
                 [],
-                Lang::get('fail to register'),
+                Lang::get('code.fail to register'),
                 400
             );
         } else {
             return $this->create(
                 $data,
-                Lang::get('registration success'),
+                Lang::get('code.registration success'),
                 200
             );
         }
@@ -93,7 +92,7 @@ class User extends Base
         if (!Validate::isInteger($id)) {
             return $this->create(
                 [],
-                Lang::get('Bad Request'),
+                Lang::get('code.Bad Request'),
                 400
             );
         }
@@ -104,13 +103,13 @@ class User extends Base
         if (empty($data)) {
             return $this->create(
                 [],
-                Lang::get('No Content'),
+                Lang::get('code.No Content'),
                 204
             );
         } else {
             return $this->create(
                 $data,
-                Lang::get('OK'),
+                Lang::get('code.OK'),
                 200
             );
         }
@@ -125,7 +124,48 @@ class User extends Base
      */
     public function update(Request $request, $id)
     {
+        //获取数据
+
+        $data = $request->param();
+        //验证返回
+        try {
+            //验证
+            validate(UserValidate::class)->scene('edit')->check($data);
+        } catch (ValidateException $exception) {
+            //错误返回
+            return $this->create(
+                [],
+                $exception->getError(),
+                400
+            );
+        }
+        //获取数据
+        $updataData = UserModel::find($id);
+
+        //如果修改数据与之前的相同则
+        //邮箱
+        if ($updataData->email === $data['email']) {
+            return $this->create([], Lang::get('validate.Same email'), 400);
+        }
+        //修改数据
+        $id = UserModel::update($data)->getData('id');
+        //判断是否有数据
+        if (empty($id)) {
+            return $this->create(
+                [],
+                Lang::get('info.Changes failed'),
+                204
+            );
+        } else {
+            return $this->create(
+                "(".$id.")",
+                Lang::get('info.Update successfully'),
+                200
+            );
+        }
     }
+
+
 
     /**
      * 删除指定资源
@@ -140,7 +180,7 @@ class User extends Base
         if (!Validate::isInteger($id)) {
             return $this->create(
                 [],
-                Lang::get('Bad Request'),
+                Lang::get('code.Bad Request'),
                 400
             );
         }
@@ -149,13 +189,13 @@ class User extends Base
             UserModel::find($id)->delete();
             return $this->create(
                 [],
-                Lang::get('OK'),
+                Lang::get('code.OK'),
                 200
             );
         } catch (\Error $e) {
             return $this->create(
                 [],
-                Lang::get('Not Found'),
+                Lang::get('code.Not Found'),
                 400
             );
         }

@@ -27,13 +27,13 @@ class Product extends Base
         if ($data->isEmpty()) {
             return $this->create(
                 [],
-                Lang::get('No Content'),
+                Lang::get('code.No Content'),
                 204
             );
         } else {
             return $this->create(
                 $data,
-                Lang::get('OK'),
+                Lang::get('code.OK'),
                 200
             );
         }
@@ -64,7 +64,7 @@ class Product extends Base
         if (!Validate::isInteger($id)) {
             return $this->create(
                 [],
-                Lang::get('Bad Request'),
+                Lang::get('code.Bad Request'),
                 400
             );
         }
@@ -73,13 +73,13 @@ class Product extends Base
         if (empty($data)) {
             return $this->create(
                 [],
-                Lang::get('No Content'),
+                Lang::get('code.No Content'),
                 204
             );
         } else {
             return $this->create(
                 $data,
-                Lang::get('OK'),
+                Lang::get('code.OK'),
                 200
             );
         }

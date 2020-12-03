@@ -27,4 +27,9 @@ class User extends Validate
      * @var array
      */
     protected $message = [];
+    //验证更新数据
+
+    protected $scene = [
+        'edit' => ['email']
+    ];
 }

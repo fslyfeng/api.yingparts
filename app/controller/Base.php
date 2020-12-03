@@ -38,6 +38,6 @@ abstract class Base
   */
   {
 
-    return $this->create([], Lang::get('Not Found'), 404);
+    return $this->create([], Lang::get('code.Not Found'), 404);
   }
 }
