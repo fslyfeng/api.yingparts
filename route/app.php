@@ -18,7 +18,10 @@ Route::get('hello/:name', 'index/hello');
 
 //用户模块
 Route::resource('user', 'User');
-Route::post('user','User/save');
+Route::post('user', 'User/save');
 
 //产品模块
 Route::resource('product', 'Product');
+
+//产品图片
+Route::get('product/:id/pic', 'Product/pic');

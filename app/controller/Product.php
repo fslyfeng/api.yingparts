@@ -107,4 +107,33 @@ class Product extends Base
     {
         //
     }
+    public function pic($id)
+    {
+        //判断id是否整型
+        if (!Validate::isInteger($id)) {
+            return $this->create(
+                [],
+                Lang::get('code.Bad Request'),
+                400
+            );
+        }
+        //按id查询图片地址
+        $data = ProductModel::find($id)->pic()->field('id,product_id,product_url')->select();
+        return $data;
+
+        //判断是否有数据
+        if ($data->isEmpty()) {
+            return $this->create(
+                [],
+                Lang::get('code.No Content'),
+                204
+            );
+        } else {
+            return $this->create(
+                $data,
+                Lang::get('code.OK'),
+                200
+            );
+        }
+    }
 }

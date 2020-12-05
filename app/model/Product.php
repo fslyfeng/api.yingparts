@@ -11,4 +11,14 @@ class Product extends Model
 
   // 设置当前模型的数据库连接
   protected $connection = 'read_sql';
+
+  public function pic()
+  /***
+  * @ description:与pic表连接
+  * @ param {*}
+  * @ return \think\model\relation\HasMany
+  */
+  {
+    return $this->hasMany(Pic::class, 'product_id', 'id');
+  }
 }
