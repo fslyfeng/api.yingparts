@@ -158,7 +158,7 @@ class User extends Base
             );
         } else {
             return $this->create(
-                "(".$id.")",
+                "(" . $id . ")",
                 Lang::get('info.Update successfully'),
                 200
             );
@@ -199,5 +199,30 @@ class User extends Base
                 400
             );
         }
+    }
+    public function login(Request $request)
+    {
+        $data = $request->param();
+        //验证用户名和密码
+        $result = Validate::rule([
+            'username' => 'unique:user,username^password'
+        ])->check([
+            'username' => $data['username'],
+            'password' => hash('sha256', $data['password']),
+        ]);
+        //判断用户数据与填入数据是否一致，结果为反值
+        if ($result) {
+            return $this->create(
+                false,
+                Lang::get('info.Login failed'),
+                400
+            );
+        } else {
+            return $this->create(
+                true,
+                Lang::get('info.Login successfully'),
+                200
+            );
+        };
     }
 }

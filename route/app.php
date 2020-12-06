@@ -25,3 +25,6 @@ Route::resource('product', 'Product');
 
 //产品图片
 Route::get('product/:id/pic', 'Product/pic');
+
+//用户登陆
+Route::post('login', 'User/login');

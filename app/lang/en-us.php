@@ -17,6 +17,8 @@ return [
   ],
   'info' => [
     'Update successfully' => 'Update successfully',
-    'Changes failed'      => 'Changes failed'
+    'Changes failed'      => 'Changes failed',
+    'Login successfully'  => 'Login successfully',
+    'Login failed'        => 'Login failed,wrong user name or password',
   ]
 ];

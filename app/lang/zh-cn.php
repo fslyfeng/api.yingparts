@@ -17,7 +17,9 @@ return [
   ],
   'info' => [
     'Update successfully' => '修改成功',
-    'Changes failed'      => '修改失败'
+    'Changes failed'      => '修改失败',
+    'Login successfully'  => '登陆成功',
+    'Login failed'        => '用户名或密码错误，登陆失败',
 
 
   ]
