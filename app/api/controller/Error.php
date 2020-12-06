@@ -6,7 +6,7 @@
 ######################################## */
 
 
-namespace app\controller;
+namespace app\api\controller;
 
 use think\facade\Lang;
 

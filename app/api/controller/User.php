@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\controller;
+namespace app\api\controller;
 
 use think\Request;
 use app\model\User as UserModel;
