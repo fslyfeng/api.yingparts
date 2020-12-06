@@ -117,18 +117,20 @@ class Product extends Base
                 400
             );
         }
-        //按id查询图片地址
-        $data = ProductModel::find($id)->pic()->field('id,product_id,product_url')->select();
-        return $data;
+
+        //按id查询图片地址id
+        $pic_id = ProductModel::find($id);
 
         //判断是否有数据
-        if ($data->isEmpty()) {
+        if (empty($pic_id)) {
             return $this->create(
                 [],
                 Lang::get('code.No Content'),
                 204
             );
         } else {
+            //再用id查出相应pic表的数据
+            $data = ProductModel::find($id)->pic()->field('id,product_id,product_url')->select();
             return $this->create(
                 $data,
                 Lang::get('code.OK'),
